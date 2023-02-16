@@ -17,10 +17,36 @@ app.get("/livros", (req, res) => {
     res.status(200).json(livros);
 });
 
+app.get("/livros/:id", (req, res) => {
+    let index = buscarLivro(req.params.id);
+
+    res.status(200).json(livros[index]);
+});
+
 app.post("/livros", (req, res) => {
     livros.push(req.body);
     
     res.status(201).send("Livro cadastrado com sucesso!!!");
 });
+
+app.put("/livros/:id", (req, res) => {
+    let index = buscarLivro(req.params.id);
+
+    livros[index].titulo = req.body.titulo;
+    
+    res.status(200).send("Livro atualizado com sucesso!!!");
+});
+
+app.delete("/livros/:id", (req, res) => {
+    let index = buscarLivro(req.params.id);
+    
+    livros.splice(livros[index], 1);
+    
+    res.status(200).send("Livro excluído com sucesso!!!");
+});
+
+function buscarLivro(id){
+    return livros.findIndex(livro => livro.id == id);
+}
 
 export default app;

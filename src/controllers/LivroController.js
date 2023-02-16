@@ -13,6 +13,19 @@ class LivroController {
             });
     }
 
+    static listarPorEditora(req, res) {
+        const {editora} = req.query;
+
+        Livro
+            .find({editora})
+            .populate("autor")
+            .exec((err, livros) => {
+                if (err) return res.status(500).json({ erro: "Erro ao processar a requisição." });
+
+                return res.status(200).json(livros);
+            });
+    }
+
     static buscarPorId(req, res) {
         let { id } = req.params;
 
